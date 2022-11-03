@@ -1,3 +1,13 @@
-# Awesome Links - part-1
+## The app is built using the following technologies:
 
-This branch has the same starting point as [this article](https://prisma.io/blog/fullstack-nextjs-graphql-prisma-oklidw1rhw)
+- Next.js as the React framework
+- Apollo Server as the GraphQL server
+- Nexus for constructing the GraphQL schema
+- Apollo Client as the GraphQL client
+- Prisma as the ORM for migrations and database access
+- PostgreSQL as the database
+- AWS S3 for uploading images
+- Auth0 for authentication
+- TypeScript as the programming language
+- TailwindCSS a utility-first CSS framework
+- Vercel for deployment
