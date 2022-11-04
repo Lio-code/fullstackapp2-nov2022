@@ -1,5 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+//All fields are required by default. To make a field optional, you can add a ? after the field type.
 
 datasource db {
   provider = "postgresql"
@@ -9,6 +10,9 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+//Defining the models User and Link, with a many-to-many relation between them
+//Note: models are typically spelled in PascalCase and should use the singular form. 
 
 model User {
   id        String   @id @default(uuid())
