@@ -11,3 +11,9 @@
 - TypeScript as the programming language
 - TailwindCSS a utility-first CSS framework
 - Vercel for deployment
+
+## How to preview the database locally:
+
+Use prisma studio.
+
+`npx prisma studio`
