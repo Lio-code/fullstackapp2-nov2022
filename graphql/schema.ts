@@ -21,8 +21,5 @@ export const typeDefs = gql`
 
   type Query {
     links: [Link]!
-    link(id: String!): Link!
-    user(id: String!): User!
-    users: [User]!
   }
 `;
