@@ -2,6 +2,7 @@ import { ApolloServer } from "apollo-server-micro";
 import { typeDefs } from "../../graphql/schema";
 import { resolvers } from "../../graphql/resolvers";
 import Cors from "micro-cors";
+import { createContext } from "../../graphql/context";
 
 // You created a new apolloServer instance which takes the schema and resolvers you just created as a parameter. You then created a function named startServer, which calls apolloServer.start();. This is a requirement of Apollo Server 3.
 
@@ -20,7 +21,11 @@ const cors = Cors({
   ],
 });
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: createContext,
+});
 
 const startServer = apolloServer.start();
 
