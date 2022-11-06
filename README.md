@@ -20,4 +20,4 @@ Use prisma studio.
 
 ## The graphql package
 
-The graphql package is the JavaScript reference implementation for GraphQL. It is a peer-dependency for apollo-server-micro, a Micro integration for Apollo Server. This integration is optimized for Next.js. Finally, you are using micro-
+The graphql package is the JavaScript reference implementation for GraphQL. It is a peer-dependency for apollo-server-micro, a Micro integration for Apollo Server. This integration is optimized for Next.js.
