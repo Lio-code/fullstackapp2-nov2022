@@ -9,7 +9,16 @@ import Cors from "micro-cors";
 
 // Finally, every API route can export a config object to change the default configs. Body parsing is disabled here since it is handled by GraphQL.
 
-const cors = Cors();
+const cors = Cors({
+  origin: "https://studio.apollographql.com",
+  allowCredentials: true,
+  allowMethods: ["GET", "POST", "PUT", "DELETE"],
+  allowHeaders: [
+    "access-control-allow-credentials",
+    "access-control-allow-origin",
+    "content-type",
+  ],
+});
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 
@@ -17,6 +26,11 @@ const startServer = apolloServer.start();
 
 export default cors(async function handler(req, res) {
   await startServer;
+
+  if (req.method === "OPTIONS") {
+    res.end();
+    return false;
+  }
 
   await apolloServer.createHandler({
     path: "/api/graphql",
