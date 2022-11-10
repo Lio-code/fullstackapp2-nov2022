@@ -18,6 +18,10 @@ Use prisma studio.
 
 `npx prisma studio`
 
-## The graphql package
+## Nexusjs
 
-The graphql package is the JavaScript reference implementation for GraphQL. It is a peer-dependency for apollo-server-micro, a Micro integration for Apollo Server. This integration is optimized for Next.js.
+Nexus is a GraphQL schema construction library where you define your GraphQL schema using code. The value proposition of this approach is you are using a programming language to build your API, which has multiple benefits:
+
+- No need to context-switch between SDL and the programming language you are using to build your business logic.
+- Auto-completion from the text-editor
+- Type-safety (if you are using TypeScript)
