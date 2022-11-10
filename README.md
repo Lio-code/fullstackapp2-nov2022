@@ -25,3 +25,10 @@ Nexus is a GraphQL schema construction library where you define your GraphQL sch
 - No need to context-switch between SDL and the programming language you are using to build your business logic.
 - Auto-completion from the text-editor
 - Type-safety (if you are using TypeScript)
+
+## Expose localhost:3000 using Ngrok
+
+While your app is running, run the following command to expose localhost:3000:
+`npx ngrok http 3000`
+
+Copy the Forwarding URL, replace localhost:3000 with your Forwarding URL in your Action, in [auth0](https://manage.auth0.com) and click Deploy.
