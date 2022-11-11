@@ -2,8 +2,13 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import toast, { Toaster } from "react-hot-toast";
-import { getSession } from "@auth0/nextjs-auth0";
-import prisma from "../lib/prisma";
+
+//Example of correct image URL:
+// https://myawsbucket64dsr.s3.eu-west-3.amazonaws.com/ame.jpeg
+
+const publicImageUrl = process.env.NEXT_PUBLIC_AWS_S3_BUCKET_NAME;
+
+console.log("publicImageUrl:", publicImageUrl);
 
 const CreateLinkMutation = gql`
   mutation (
@@ -30,22 +35,47 @@ const CreateLinkMutation = gql`
 `;
 
 const Admin = () => {
+  const [createLink, { data, loading, error }] =
+    useMutation(CreateLinkMutation);
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm();
 
-  const [createLink, { loading, error }] = useMutation(CreateLinkMutation, {
-    onCompleted: () => reset(),
-  });
+  // Upload photo function
+  const uploadPhoto = async (e) => {
+    const file = e.target.files[0];
 
-  // The onSubmit function passes the form values to the createLink mutation. A toast will be shown as the mutation is being executed – success, loading, or error.
+    console.log("file:", file);
+
+    const filename = encodeURIComponent(file.name);
+    const res = await fetch(`/api/upload-image?file=${filename}`);
+    const data = await res.json();
+    console.log("data : ", data);
+    const formData = new FormData();
+
+    // // @ts-ignore
+    // Object.entries({ ...data.fields, file }).forEach(([key, value]) => {
+    //   formData.append(key, value);
+    // });
+
+    toast.promise(
+      fetch(data.url, {
+        method: "POST",
+        body: formData,
+      }),
+      {
+        loading: "Uploading...",
+        success: "Image successfully uploaded!🎉",
+        error: `Upload failed 😥 Please try again ${error}`,
+      }
+    );
+  };
 
   const onSubmit = async (data) => {
-    const { title, url, category, description } = data;
-    const imageUrl = `https://via.placeholder.com/300`;
+    const { title, url, category, description, image } = data;
+    const imageUrl = `https://${publicImageUrl}.amazonaws.com/${image[0].name}`;
     const variables = { title, url, category, description, imageUrl };
     try {
       toast.promise(createLink({ variables }), {
@@ -106,6 +136,18 @@ const Admin = () => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
           />
         </label>
+        <label className="block">
+          <span className="text-gray-700">
+            Upload a .png or .jpg image (max 1MB).
+          </span>
+          <input
+            {...register("image", { required: true })}
+            onChange={uploadPhoto}
+            type="file"
+            accept="image/png, image/jpeg"
+            name="image"
+          />
+        </label>
 
         <button
           disabled={loading}
@@ -134,23 +176,3 @@ const Admin = () => {
 };
 
 export default Admin;
-
-// In getServerSideProps, if there is no session, you are redirecting the user to the login page. If a user record that matches the email of the logged-in user is found, the /admin page is rendered.
-
-export const getServerSideProps = async ({ req, res }) => {
-  const session = getSession(req, res);
-
-  if (!session) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/api/auth/login",
-      },
-      props: {},
-    };
-  }
-
-  return {
-    props: {},
-  };
-};
